@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bike Shop Manager - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* --- Enhanced Styles --- */
+    :root {
+      --primary: #2c3e50;
+      --accent: #27ae60;
+      --accent-dark: #219653;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --info: #3498db;
+      --muted: #f8f9fa;
+      --text: #2d3436;
+      --border: #dfe6e9;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --radius: 8px;
+      --transition: all 0.3s ease;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--muted);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    /* Mobile-first responsive design */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+      
+      .login-card, .form-card {
+        padding: 1.5rem;
+        max-width: 90vw;
+      }
+      
+      header {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 0.8rem;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav button {
+        flex: 1 1 calc(50% - 0.5rem);
+        margin: 0.25rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row, .sale-form, .report-controls {
+        grid-template-columns: 1fr;
+      }
+      
+      .item-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .item-actions {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .item-actions button {
+        flex: 1 1 calc(50% - 0.5rem);
+        margin: 0.25rem;
+      }
+      
+      .rights-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .top-controls {
+        justify-content: center;
+      }
+      
+      .user-actions {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      nav button {
+        flex: 1 1 100%;
+      }
+      
+      .item-actions button {
+        flex: 1 1 100%;
+      }
+      
+      .form-buttons {
+        flex-direction: column;
+      }
+      
+      .form-buttons button {
+        width: 100%;
+      }
+      
+      .report-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .report-controls button {
+        width: 100%;
+      }
+    }
+    
+    /* Login Page Styles */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 1rem;
+    }
+    
+    .login-card {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .login-card h1 {
+      color: var(--primary);
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .form-group input {
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+    }
+    
+    .login-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    
+    .login-btn:hover {
+      background: var(--accent-dark);
+    }
+    
+    .error-message {
+      color: var(--danger);
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #ffebee;
+      border-radius: var(--radius);
+      display: none;
+    }
+    
+    /* Main App Styles */
+    .app-container {
+      display: none;
+    }
+    
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    header h1 {
+      font-size: 1.4rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    header h1 i {
+      color: var(--accent);
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logout-btn {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .logout-btn:hover {
+      background: #c0392b;
+    }
+    
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #34495e;
+      overflow-x: auto;
+    }
+    
+    nav button {
+      background: #4a6278;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    nav button:hover {
+      background: #3d566e;
+    }
+    
+    nav button.active {
+      background: var(--accent);
+    }
+    
+    nav button.active:hover {
+      background: var(--accent-dark);
+    }
+    
+    main {
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+    
+    .section {
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    h2 {
+      color: var(--primary);
+      margin-top: 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      border-left: 4px solid var(--accent);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card h3 {
+      margin: 0 0 0.8rem 0;
+      font-size: 1rem;
+      color: #636e72;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .stat-card p {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .add-btn, .export-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .add-btn:hover, .export-btn:hover {
+      background: var(--accent-dark);
+    }
+    
+    .btn-info {
+      background: var(--info);
+    }
+    
+    .btn-info:hover {
+      background: #2980b9;
+    }
+    
+    .top-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      justify-content: space-between;
+    }
+    
+    .item-list {
+      display: grid;
+      gap: 1.2rem;
+    }
+    
+    .item-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .item-card:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .item-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    
+    .item-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .item-details h4 {
+      margin: 0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .item-details p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    
+    .item-props {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    
+    .item-prop {
+      background: var(--muted);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .item-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: flex-end;
+    }
+    
+    .item-actions button {
+      padding: 0.5rem 0.8rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .item-actions button.edit {
+      background: var(--warning);
+      color: #fff;
+    }
+    
+    .item-actions button.edit:hover {
+      background: #e67e22;
+    }
+    
+    .item-actions button.delete, .item-actions button.revert {
+      background: var(--danger);
+      color: #fff;
+    }
+    
+    .item-actions button.delete:hover, .item-actions button.revert:hover {
+      background: #c0392b;
+    }
+    
+    .item-actions button.receipt {
+      background: var(--info);
+      color: #fff;
+    }
+    
+    .item-actions button.receipt:hover {
+      background: #2980b9;
+    }
+    
+    .form-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      padding: 1rem;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    
+    .form-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .form-card {
+      background: #fff;
+      padding: 1.8rem;
+      border-radius: var(--radius);
+      max-width: 720px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: var(--transition);
+    }
+    
+    .form-modal.active .form-card {
+      transform: translateY(0);
+    }
+    
+    .form-card h3 {
+      margin: 0 0 1.5rem 0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: #636e72;
+      font-weight: 500;
+    }
+    
+    label span {
+      margin-bottom: 0.4rem;
+    }
+    
+    input, select {
+      padding: 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      transition: var(--transition);
+      width: 100%;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+    }
+    
+    .form-buttons {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+    
+    .form-buttons button {
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      min-width: 100px;
+    }
+    
+    .form-buttons button[type="submit"] {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+    
+    .form-buttons button[type="submit"]:hover {
+      background: var(--accent-dark);
+    }
+    
+    .form-buttons button[type="button"] {
+      background: #f8f9fa;
+      color: #636e72;
+      border: 1px solid var(--border);
+    }
+    
+    .form-buttons button[type="button"]:hover {
+      background: #e9ecef;
+    }
+    
+    .sale-form {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      align-items: end;
+      box-shadow: var(--shadow);
+    }
+    
+    .report-controls {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      box-shadow: var(--shadow);
+      justify-content: space-between;
+    }
+    
+    #reportTable {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    
+    th, td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      background: var(--muted);
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    tr:hover {
+      background: #f8f9fa;
+    }
+    
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .status-online {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .status-offline {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(39, 174, 96, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      color: white;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.4s ease;
+      max-width: 90vw;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .notification.success {
+      background: var(--accent);
+    }
+    
+    .notification.error {
+      background: var(--danger);
+    }
+    
+    .notification.warning {
+      background: var(--warning);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #636e72;
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #b2bec3;
+    }
+    
+    .empty-state p {
+      margin: 0.5rem 0;
+    }
+    
+    /* User Management Styles */
+    .rights-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .right-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .user-list {
+      margin-top: 1.5rem;
+    }
+    
+    .user-item {
+      background: #fff;
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .user-rights {
+      font-size: 0.85rem;
+      color: #636e72;
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .user-actions button {
+      min-width: 100px;
+    }
+    
+    /* Edit Sale Modal */
+    #editSaleForm .form-row {
+      align-items: start;
+    }
+    
+    #editSaleForm input[readonly] {
+      background: #f8f9fa;
+      color: #636e72;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Page -->
+  <div class="login-container" id="loginPage">
+    <div class="login-card">
+      <h1><i class="fas fa-bicycle"></i> Bike Shop Manager</h1>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+        <div class="error-message" id="loginError">
+          Invalid username or password
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Application (Hidden Initially) -->
+  <div class="app-container" id="appContainer">
+    <header>
+      <h1><i class="fas fa-bicycle"></i> Bike Shop Inventory & Sales Manager</h1>
+      <div class="header-right">
+        <div class="user-info">
+          <i class="fas fa-user"></i>
+          <span id="currentUser">Admin</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <nav>
+      <button id="dashboardBtn" class="active"><i class="fas fa-chart-line"></i> Dashboard</button>
+      <button id="inventoryBtn"><i class="fas fa-warehouse"></i> Inventory</button>
+      <button id="salesBtn"><i class="fas fa-shopping-cart"></i> Sales</button>
+      <button id="reportsBtn"><i class="fas fa-chart-bar"></i> Reports</button>
+      <button id="usersBtn" style="display: none;" class="admin-only"><i class="fas fa-users"></i> Users</button>
+    </nav>
+
+    <main>
+      <!-- Dashboard -->
+      <section id="dashboard" class="section active">
+        <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card"><h3><i class="fas fa-money-bill-wave"></i> Total Inventory Value</h3><p id="totalValue">KSh 0.00</p></div>
+          <div class="stat-card"><h3><i class="fas fa-bicycle"></i> Bikes in Stock</h3><p id="totalStock">0</p></div>
+          <div class="stat-card"><h3><i class="fas fa-calendar-day"></i> Today's Sales</h3><p id="todaySales">KSh 0.00</p></div>
+          <div class="stat-card"><h3><i class="fas fa-chart-pie"></i> Total Sales</h3><p id="totalSales">KSh 0.00</p></div>
+        </div>
+      </section>
+
+      <!-- Inventory -->
+      <section id="inventory" class="section">
+        <h2><i class="fas fa-warehouse"></i> Inventory Management</h2>
+        <div class="top-controls">
+          <div style="display: flex; gap: 0.8rem;">
+            <button id="addBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add New Bike</button>
+            <button id="initDbBtn" class="add-btn btn-info admin-only"><i class="fas fa-database"></i> Initialize Database</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="color:#666;font-size:.9rem">Supabase:</span>
+            <span id="supabaseStatus" class="status-indicator status-offline">checking...</span>
+          </div>
+        </div>
+        <div id="inventoryList" class="item-list">
+          <div class="empty-state">
+            <i class="fas fa-bicycle"></i>
+            <h3>No Bikes in Inventory</h3>
+            <p>Get started by adding your first bike</p>
+            <button id="addFirstBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add Bike</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sales -->
+      <section id="sales" class="section">
+        <h2><i class="fas fa-shopping-cart"></i> Record Sale</h2>
+        <div class="sale-form">
+          <label>
+            <span><i class="fas fa-bicycle"></i> Select Bike</span>
+            <select id="saleBikeSelect">
+              <option value="">Loading bikes...</option>
+            </select>
+          </label>
+          <label>
+            <span><i class="fas fa-hashtag"></i> Quantity</span>
+            <input type="number" id="saleQty" min="1" value="1">
+          </label>
+          <label>
+            <span><i class="fas fa-money-bill"></i> Total Amount (KSh)</span>
+            <input type="number" id="saleTotal" step="0.01" min="0" value="0.00">
+          </label>
+          <button id="recordSaleBtn" class="add-btn">
+            <i class="fas fa-check"></i> Record Sale
+          </button>
+        </div>
+        
+        <h3><i class="fas fa-history"></i> Recent Sales</h3>
+        <div id="salesList" class="item-list">
+          <div class="empty-state">
+            <i class="fas fa-receipt"></i>
+            <h3>No Sales Recorded</h3>
+            <p>Record a sale to see it here</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports -->
+      <section id="reports" class="section">
+        <h2><i class="fas fa-chart-bar"></i> Sales Reports</h2>
+        <div class="report-controls">
+          <label>
+            <span><i class="fas fa-calendar"></i> Start Date</span>
+            <input type="date" id="startDate">
+          </label>
+          <label>
+            <span><i class="fas fa-calendar"></i> End Date</span>
+            <input type="date" id="endDate">
+          </label>
+          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+            <button id="generateReport" class="add-btn">
+              <i class="fas fa-sync"></i> Generate Report
+            </button>
+            <button id="exportPdf" class="export-btn">
+              <i class="fas fa-file-pdf"></i> Export PDF
+            </button>
+            <button id="exportExcel" class="export-btn">
+              <i class="fas fa-file-excel"></i> Export Excel
+            </button>
+          </div>
+        </div>
+        <div id="reportTable">
+          <div class="empty-state">
+            <i class="fas fa-chart-bar"></i>
+            <h3>No Report Generated</h3>
+            <p>Select a date range and generate a report</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- User Management -->
+      <section id="users" class="section">
+        <h2><i class="fas fa-users"></i> User Management</h2>
+        <div class="top-controls">
+          <button id="addUserBtn" class="add-btn"><i class="fas fa-user-plus"></i> Add New User</button>
+        </div>
+        
+        <div id="userList" class="user-list">
+          <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h3>No Users Found</h3>
+            <p>Add users to manage access to the system</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Add/Edit Bike Modal -->
+    <div id="addBikeForm" class="form-modal">
+      <div class="form-card">
+        <h3 id="formTitle"><i class="fas fa-bicycle"></i> Add New Bike</h3>
+        <form id="bikeForm">
+          <input type="hidden" id="editId">
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-font"></i> Name</span>
+              <input type="text" id="bikeName" required>
+            </label>
+            <label>
+              <span><i class="fas fa-barcode"></i> Product ID</span>
+              <input type="text" id="productId" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-tag"></i> Price (KSh)</span>
+              <input type="number" id="bikePrice" step="0.01" min="0" required>
+            </label>
+            <label>
+              <span><i class="fas fa-cubes"></i> Quantity</span>
+              <input type="number" id="bikeQty" min="0" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-calendar"></i> Date Received</span>
+              <input type="date" id="dateReceived" required>
+            </label>
+            <label>
+              <span><i class="fas fa-user"></i> Received By</span>
+              <input type="text" id="receivedBy" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-truck"></i> Supplier Name</span>
+              <input type="text" id="supplierName">
+            </label>
+            <label>
+              <span><i class="fas fa-ruler"></i> Bicycle Size</span>
+              <input type="text" id="bicycleSize" placeholder="e.g. M / 54cm">
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-palette"></i> Color</span>
+              <input type="text" id="color">
+            </label>
+            <label>
+              <span><i class="fas fa-check-circle"></i> Condition</span>
+              <select id="condition">
+                <option>New</option>
+                <option>Used</option>
+                <option>Refurbished</option>
+                <option>Damaged</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-layer-group"></i> Category</span>
+              <select id="bikeCategory">
+                <option value="Mountain">Mountain</option>
+                <option value="Road">Road</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric</option>
+              </select>
+            </label>
+            <label>
+              <span><i class="fas fa-image"></i> Product Image</span>
+              <input type="file" id="bikeImage" accept="image/*">
+            </label>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="add-btn"><i class="fas fa-save"></i> Save</button>
+            <button type="button" id="cancelEdit"><i class="fas fa-times"></i> Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div id="userFormModal" class="form-modal">
+      <div class="form-card">
+        <h3 id="userFormTitle"><i class="fas fa-user-plus"></i> Add New User</h3>
+        <form id="userForm">
+          <input type="hidden" id="userId">
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-user"></i> Username</span>
+              <input type="text" id="userUsername" required>
+            </label>
+            <label>
+              <span><i class="fas fa-lock"></i> Password</span>
+              <input type="password" id="userPassword" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-user-tag"></i> Full Name</span>
+              <input type="text" id="userFullName" required>
+            </label>
+            <label>
+              <span><i class="fas fa-envelope"></i> Email</span>
+              <input type="email" id="userEmail">
+            </label>
+          </div>
+          <div>
+            <label>
+              <span><i class="fas fa-key"></i> User Rights</span>
+              <div class="rights-container">
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="view_dashboard"> View Dashboard
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="view_inventory"> View Inventory
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="edit_inventory"> Edit Inventory
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="view_sales"> View Sales
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="record_sales"> Record Sales
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="edit_sales"> Edit Sales
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="view_reports"> View Reports
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="generate_reports"> Generate Reports
+                </label>
+                <label class="right-checkbox">
+                  <input type="checkbox" name="userRights" value="manage_users"> Manage Users
+                </label>
+              </div>
+            </label>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="add-btn"><i class="fas fa-save"></i> Save User</button>
+            <button type="button" id="cancelUserEdit"><i class="fas fa-times"></i> Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Sale Modal -->
+    <div id="editSaleForm" class="form-modal">
+      <div class="form-card">
+        <h3><i class="fas fa-edit"></i> Edit Sale</h3>
+        <form id="saleEditForm">
+          <input type="hidden" id="editSaleId">
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-bicycle"></i> Bike Name</span>
+              <input type="text" id="editSaleBikeName" readonly>
+            </label>
+            <label>
+              <span><i class="fas fa-calendar"></i> Date</span>
+              <input type="date" id="editSaleDate" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span><i class="fas fa-hashtag"></i> Quantity</span>
+              <input type="number" id="editSaleQty" min="1" required>
+            </label>
+            <label>
+              <span><i class="fas fa-money-bill"></i> Total Amount (KSh)</span>
+              <input type="number" id="editSaleTotal" step="0.01" min="0" required>
+            </label>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="add-btn"><i class="fas fa-save"></i> Save Changes</button>
+            <button type="button" id="cancelSaleEdit"><i class="fas fa-times"></i> Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification">
+      <i class="fas fa-check-circle"></i>
+      <span id="notificationText"></span>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // ---------- Environment Variables ----------
+    const SUPABASE_URL = window.SUPABASE_URL || 'https://exttxuqfayvsubzbuvai.supabase.co';
+    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4dHR4dXFmYXl2c3ViemJ1dmFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMDQ2MTcsImV4cCI6MjA3Mzc4MDYxN30.0LJCw0JbVooZ3cfxnOYcG9R9UexKdFbiZtp-pQ6eMFA';
+
+    // Initialize Supabase client
+    let supabase = null;
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        document.getElementById('supabaseStatus').textContent = 'connected';
+        document.getElementById('supabaseStatus').className = 'status-indicator status-online';
+      }
+    } catch (error) {
+      console.warn('Supabase client initialization failed:', error);
+      document.getElementById('supabaseStatus').textContent = 'connection failed';
+    }
+
+    // ---------- Authentication and User Management ----------
+    class AuthManager {
+      constructor() {
+        this.currentUser = null;
+        this.users = JSON.parse(localStorage.getItem('bikeShopUsers')) || [];
+        
+        // Add default admin user if no users exist
+        if (this.users.length === 0) {
+          this.users.push({
+            id: 1,
+            username: 'admin',
+            password: 'admin', // In a real app, this would be hashed
+            fullName: 'Administrator',
+            email: 'admin@bikeshop.com',
+            rights: ['view_dashboard', 'view_inventory', 'edit_inventory', 'view_sales', 
+                    'record_sales', 'edit_sales', 'view_reports', 'generate_reports', 'manage_users'],
+            isAdmin: true
+          });
+          this.saveUsers();
+        }
+      }
+      
+      login(username, password) {
+        const user = this.users.find(u => u.username === username && u.password === password);
+        if (user) {
+          this.currentUser = user;
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+          return true;
+        }
+        return false;
+      }
+      
+      logout() {
+        this.currentUser = null;
+        sessionStorage.removeItem('currentUser');
+      }
+      
+      isLoggedIn() {
+        return this.currentUser !== null;
+      }
+      
+      hasRight(right) {
+        if (!this.currentUser) return false;
+        if (this.currentUser.isAdmin) return true;
+        return this.currentUser.rights.includes(right);
+      }
+      
+      addUser(userData) {
+        const newUser = {
+          id: this.users.length > 0 ? Math.max(...this.users.map(u => u.id)) + 1 : 1,
+          username: userData.username,
+          password: userData.password, // In a real app, this would be hashed
+          fullName: userData.fullName,
+          email: userData.email,
+          rights: userData.rights || [],
+          isAdmin: false
+        };
+        
+        this.users.push(newUser);
+        this.saveUsers();
+        return newUser;
+      }
+      
+      updateUser(userId, userData) {
+        const userIndex = this.users.findIndex(u => u.id === userId);
+        if (userIndex === -1) return false;
+        
+        this.users[userIndex] = {
+          ...this.users[userIndex],
+          username: userData.username,
+          fullName: userData.fullName,
+          email: userData.email,
+          rights: userData.rights || []
+        };
+        
+        // Only update password if provided
+        if (userData.password) {
+          this.users[userIndex].password = userData.password;
+        }
+        
+        this.saveUsers();
+        return true;
+      }
+      
+      deleteUser(userId) {
+        const userIndex = this.users.findIndex(u => u.id === userId);
+        if (userIndex === -1) return false;
+        
+        // Prevent deletion of admin user
+        if (this.users[userIndex].isAdmin) return false;
+        
+        this.users.splice(userIndex, 1);
+        this.saveUsers();
+        return true;
+      }
+      
+      saveUsers() {
+        localStorage.setItem('bikeShopUsers', JSON.stringify(this.users));
+      }
+      
+      getAllUsers() {
+        return this.users.filter(user => !user.isAdmin);
+      }
+      
+      getUserById(userId) {
+        return this.users.find(user => user.id === userId);
+      }
+    }
+
+    // ---------- BikeShopManager Class ----------
+    class BikeShopManager {
+      constructor(authManager) {
+        this.authManager = authManager;
+        this.inventory = [];
+        this.sales = [];
+        this.currentDate = new Date().toISOString().split('T')[0];
+        this.isLoading = false;
+        this.reportData = [];
+        
+        // Check if user is already logged in
+        const savedUser = sessionStorage.getItem('currentUser');
+        if (savedUser) {
+          this.authManager.currentUser = JSON.parse(savedUser);
+          this.showApp();
+        } else {
+          this.showLogin();
+        }
+        
+        this.initEventListeners();
+        this.loadAll();
+      }
+
+      showLogin() {
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('appContainer').style.display = 'none';
+      }
+
+      showApp() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+        
+        // Update UI based on user rights
+        this.updateUIForUserRights();
+        
+        // Set current username
+        document.getElementById('currentUser').textContent = this.authManager.currentUser.fullName;
+        
+        // Show/hide admin features
+        const adminElements = document.querySelectorAll('.admin-only');
+        adminElements.forEach(el => {
+          el.style.display = this.authManager.hasRight('manage_users') ? 'inline-flex' : 'none';
+        });
+      }
+      
+      updateUIForUserRights() {
+        // Enable/disable features based on user rights
+        const addBikeBtn = document.getElementById('addBikeBtn');
+        const addFirstBikeBtn = document.getElementById('addFirstBikeBtn');
+        const recordSaleBtn = document.getElementById('recordSaleBtn');
+        const generateReportBtn = document.getElementById('generateReport');
+        const initDbBtn = document.getElementById('initDbBtn');
+        const exportPdfBtn = document.getElementById('exportPdf');
+        const exportExcelBtn = document.getElementById('exportExcel');
+        
+        if (addBikeBtn) addBikeBtn.disabled = !this.authManager.hasRight('edit_inventory');
+        if (addFirstBikeBtn) addFirstBikeBtn.disabled = !this.authManager.hasRight('edit_inventory');
+        if (recordSaleBtn) recordSaleBtn.disabled = !this.authManager.hasRight('record_sales');
+        if (generateReportBtn) generateReportBtn.disabled = !this.authManager.hasRight('generate_reports');
+        if (initDbBtn) initDbBtn.style.display = this.authManager.hasRight('manage_users') ? 'inline-flex' : 'none';
+        if (exportPdfBtn) exportPdfBtn.disabled = !this.authManager.hasRight('generate_reports');
+        if (exportExcelBtn) exportExcelBtn.disabled = !this.authManager.hasRight('generate_reports');
+      }
+
+      async loadAll() {
+        this.showLoading(true);
+        
+        // Load from localStorage first
+        try {
+          const inventoryData = localStorage.getItem('bikeInventory');
+          const salesData = localStorage.getItem('bikeSales');
+          
+          this.inventory = inventoryData ? JSON.parse(inventoryData) : [];
+          this.sales = salesData ? JSON.parse(salesData) : [];
+          
+          // Assign IDs to sales if not present
+          this.sales.forEach((sale, index) => {
+            if (!sale.id) sale.id = index + 1;
+          });
+          
+          this.renderAll();
+        } catch (error) {
+          console.error('Error loading from localStorage:', error);
+          this.showNotification('Error loading local data', 'error');
+        }
+
+        // Try to fetch from Supabase if available
+        if (supabase) {
+          try {
+            // Load inventory from Supabase
+            const { data: bikes, error: bikeError } = await supabase
+              .from('bikes')
+              .select('*');
+              
+            if (!bikeError && bikes && bikes.length > 0) {
+              this.inventory = bikes.map(b => ({
+                name: b.name,
+                productId: b.product_id || b.productId || b.id || '',
+                price: parseFloat(b.price) || 0,
+                quantity: parseInt(b.quantity) || 0,
+                dateReceived: b.date_received || '',
+                category: b.category || '',
+                image: b.image || null,
+                supplierName: b.supplier_name || '',
+                bicycleSize: b.bicycle_size || '',
+                color: b.color || '',
+                condition: b.condition || '',
+                receivedBy: b.received_by || ''
+              }));
+              
+              localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+            }
+            
+            // Load sales from Supabase
+            const { data: sales, error: salesError } = await supabase
+              .from('sales')
+              .select('*');
+              
+            if (!salesError && sales && sales.length > 0) {
+              this.sales = sales.map(s => ({
+                id: s.id,
+                date: s.date,
+                bikeName: s.bike_name,
+                productId: s.product_id,
+                quantity: s.quantity,
+                price: parseFloat(s.price) || 0,
+                total: parseFloat(s.total) || 0,
+                image: s.image || null
+              }));
+              
+              localStorage.setItem('bikeSales', JSON.stringify(this.sales));
+            }
+            
+            this.renderAll();
+            this.showNotification('Data synchronized with Supabase', 'success');
+          } catch (error) {
+            console.warn('Could not fetch from Supabase — working offline:', error);
+            this.showNotification('Working in offline mode', 'warning');
+          }
+        }
+        
+        this.showLoading(false);
+      }
+
+      initEventListeners() {
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleLogin();
+        });
+        
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          this.authManager.logout();
+          this.showLogin();
+        });
+
+        // Navigation
+        document.querySelectorAll('nav button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            // Check if user has rights to access this section
+            const sectionId = e.target.id.replace('Btn', '');
+            let hasAccess = false;
+            
+            switch(sectionId) {
+              case 'dashboard':
+                hasAccess = this.authManager.hasRight('view_dashboard');
+                break;
+              case 'inventory':
+                hasAccess = this.authManager.hasRight('view_inventory');
+                break;
+              case 'sales':
+                hasAccess = this.authManager.hasRight('view_sales');
+                break;
+              case 'reports':
+                hasAccess = this.authManager.hasRight('view_reports');
+                break;
+              case 'users':
+                hasAccess = this.authManager.hasRight('manage_users');
+                break;
+              default:
+                hasAccess = true;
+            }
+            
+            if (!hasAccess) {
+              this.showNotification('You do not have permission to access this section', 'error');
+              return;
+            }
+            
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Special handling for users section
+            if (sectionId === 'users') {
+              this.renderUsers();
+            }
+          });
+        });
+
+        // Inventory controls
+        document.getElementById('addBikeBtn').addEventListener('click', () => this.showAddForm());
+        document.getElementById('addFirstBikeBtn').addEventListener('click', () => this.showAddForm());
+        document.getElementById('bikeForm').addEventListener('submit', (e) => this.saveBike(e));
+        document.getElementById('cancelEdit').addEventListener('click', () => this.hideAddForm());
+        document.getElementById('initDbBtn').addEventListener('click', () => this.seedSampleData());
+
+        // Sales controls
+        document.getElementById('saleBikeSelect').addEventListener('change', () => this.updateSaleTotal());
+        document.getElementById('saleQty').addEventListener('input', () => this.updateSaleTotal());
+        document.getElementById('saleTotal').addEventListener('input', (e) => {
+          if (e.target.value === '') e.target.value = '0.00';
+        });
+        document.getElementById('recordSaleBtn').addEventListener('click', () => this.recordSale());
+
+        // Reports controls
+        document.getElementById('generateReport').addEventListener('click', () => this.generateReport());
+        document.getElementById('exportPdf').addEventListener('click', () => this.exportToPDF());
+        document.getElementById('exportExcel').addEventListener('click', () => this.exportToExcel());
+        
+        // User management controls
+        document.getElementById('addUserBtn').addEventListener('click', () => this.showUserForm());
+        document.getElementById('userForm').addEventListener('submit', (e) => this.saveUser(e));
+        document.getElementById('cancelUserEdit').addEventListener('click', () => this.hideUserForm());
+
+        // Sale edit controls
+        document.getElementById('saleEditForm').addEventListener('submit', (e) => this.saveSaleEdit(e));
+        document.getElementById('cancelSaleEdit').addEventListener('click', () => this.hideSaleEditForm());
+
+        // Set default dates
+        document.getElementById('startDate').value = this.currentDate;
+        document.getElementById('endDate').value = this.currentDate;
+      }
+      
+      handleLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorElement = document.getElementById('loginError');
+        
+        if (this.authManager.login(username, password)) {
+          this.showApp();
+        } else {
+          errorElement.style.display = 'block';
+          setTimeout(() => {
+            errorElement.style.display = 'none';
+          }, 3000);
+        }
+      }
+
+      showLoading(show) {
+        this.isLoading = show;
+        const buttons = document.querySelectorAll('button:not(.login-btn)');
+        buttons.forEach(btn => {
+          if (show) {
+            btn.disabled = true;
+          } else {
+            btn.disabled = false;
+          }
+        });
+        
+        if (show) {
+          document.body.style.opacity = '0.8';
+          document.body.style.pointerEvents = 'none';
+        } else {
+          document.body.style.opacity = '';
+          document.body.style.pointerEvents = '';
+        }
+      }
+
+      showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const text = document.getElementById('notificationText');
+        const icon = notification.querySelector('i');
+        
+        text.textContent = message;
+        notification.className = `notification ${type} show`;
+        
+        if (type === 'success') icon.className = 'fas fa-check-circle';
+        else if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+        else if (type === 'warning') icon.className = 'fas fa-exclamation-triangle';
+        
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 3000);
+      }
+
+      renderAll() {
+        this.renderInventory();
+        this.renderSales();
+        this.updateDashboard();
+        this.populateSaleSelect();
+      }
+
+      renderInventory() {
+        const list = document.getElementById('inventoryList');
+        
+        if (this.inventory.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-bicycle"></i>
+              <h3>No Bikes in Inventory</h3>
+              <p>Get started by adding your first bike</p>
+              <button id="addFirstBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add Bike</button>
+            </div>
+          `;
+          const addFirstBtn = document.getElementById('addFirstBikeBtn');
+          addFirstBtn.disabled = !this.authManager.hasRight('edit_inventory');
+          addFirstBtn.addEventListener('click', () => this.showAddForm());
+          return;
+        }
+        
+        list.innerHTML = this.inventory.map((bike, index) => `
+          <div class="item-card">
+            ${bike.image ? `<img src="${bike.image}" alt="${bike.name}">` : 
+              `<div style="width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:var(--radius);border:1px solid var(--border);">
+                 <i class="fas fa-bicycle" style="font-size:2rem;color:#b2bec3;"></i>
+               </div>`}
+            <div class="item-details">
+              <h4>${bike.name} <span style="background:#e8f5e9;color:#2e7d32;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.7rem;font-weight:normal;">${bike.category}</span></h4>
+              <p><strong>Product ID:</strong> ${bike.productId}</p>
+              <p><strong>Price:</strong> KSh ${parseFloat(bike.price || 0).toFixed(2)} | <strong>Qty:</strong> ${bike.quantity}</p>
+              <div class="item-props">
+                <span class="item-prop"><i class="fas fa-calendar"></i> ${bike.dateReceived}</span>
+                <span class="item-prop"><i class="fas fa-user"></i> ${bike.receivedBy || '-'}</span>
+                <span class="item-prop"><i class="fas fa-truck"></i> ${bike.supplierName || '-'}</span>
+                <span class="item-prop"><i class="fas fa-ruler"></i> ${bike.bicycleSize || '-'}</span>
+                <span class="item-prop"><i class="fas fa-palette"></i> ${bike.color || '-'}</span>
+                <span class="item-prop"><i class="fas fa-check-circle"></i> ${bike.condition || '-'}</span>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="edit" ${!this.authManager.hasRight('edit_inventory') ? 'disabled' : ''} onclick="manager.editBike(${index})"><i class="fas fa-edit"></i> Edit</button>
+              <button class="delete" ${!this.authManager.hasRight('edit_inventory') ? 'disabled' : ''} onclick="manager.deleteBike(${index})"><i class="fas fa-trash"></i> Delete</button>
+              ${bike.quantity > 0 ? `<button class="receipt" ${!this.authManager.hasRight('record_sales') ? 'disabled' : ''} onclick="manager.sellBike(${index})"><i class="fas fa-shopping-cart"></i> Sell</button>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderSales() {
+        const list = document.getElementById('salesList');
+        
+        if (this.sales.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-receipt"></i>
+              <h3>No Sales Recorded</h3>
+              <p>Record a sale to see it here</p>
+            </div>
+          `;
+          return;
+        }
+        
+        // Show only the 10 most recent sales
+        const recentSales = [...this.sales].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+        
+        list.innerHTML = recentSales.map(sale => `
+          <div class="item-card">
+            ${sale.image ? `<img src="${sale.image}" alt="${sale.bikeName}">` : 
+              `<div style="width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:var(--radius);border:1px solid var(--border);">
+                 <i class="fas fa-bicycle" style="font-size:2rem;color:#b2bec3;"></i>
+               </div>`}
+            <div class="item-details">
+              <h4>${sale.bikeName}</h4>
+              <p><strong>Product ID:</strong> ${sale.productId}</p>
+              <p><strong>Date:</strong> ${sale.date} | <strong>Qty:</strong> ${sale.quantity}</p>
+              <p><strong>Total:</strong> KSh ${parseFloat(sale.total || 0).toFixed(2)}</p>
+            </div>
+            <div class="item-actions">
+              <button class="edit" ${!this.authManager.hasRight('edit_sales') ? 'disabled' : ''} onclick="manager.editSale(${sale.id})"><i class="fas fa-edit"></i> Edit</button>
+              <button class="revert" ${!this.authManager.hasRight('edit_sales') ? 'disabled' : ''} onclick="manager.revertSale(${sale.id})"><i class="fas fa-undo"></i> Revert</button>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+      renderUsers() {
+        const userList = document.getElementById('userList');
+        const users = this.authManager.getAllUsers();
+        
+        if (users.length === 0) {
+          userList.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-users"></i>
+              <h3>No Users Found</h3>
+              <p>Add users to manage access to the system</p>
+            </div>
+          `;
+          return;
+        }
+        
+        userList.innerHTML = users.map(user => `
+          <div class="user-item">
+            <div class="user-info">
+              <div class="user-name">${user.fullName} (${user.username})</div>
+              <div class="user-rights">Rights: ${user.rights.join(', ') || 'None'}</div>
+            </div>
+            <div class="user-actions">
+              <button class="edit" onclick="manager.editUser(${user.id})"><i class="fas fa-edit"></i> Edit</button>
+              <button class="delete" onclick="manager.deleteUser(${user.id})"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      updateDashboard() {
+        // Calculate total inventory value
+        const totalValue = this.inventory.reduce((sum, bike) => sum + (bike.price * bike.quantity), 0);
+        document.getElementById('totalValue').textContent = `KSh ${totalValue.toFixed(2)}`;
+        
+        // Calculate total stock
+        const totalStock = this.inventory.reduce((sum, bike) => sum + bike.quantity, 0);
+        document.getElementById('totalStock').textContent = totalStock;
+        
+        // Calculate today's sales
+        const todaySales = this.sales
+          .filter(sale => sale.date === this.currentDate)
+          .reduce((sum, sale) => sum + sale.total, 0);
+        document.getElementById('todaySales').textContent = `KSh ${todaySales.toFixed(2)}`;
+        
+        // Calculate total sales
+        const totalSalesAmount = this.sales.reduce((sum, sale) => sum + sale.total, 0);
+        document.getElementById('totalSales').textContent = `KSh ${totalSalesAmount.toFixed(2)}`;
+      }
+
+      populateSaleSelect() {
+        const select = document.getElementById('saleBikeSelect');
+        select.innerHTML = '<option value="">Select a bike</option>';
+        
+        this.inventory.forEach((bike, index) => {
+          if (bike.quantity > 0) {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `${bike.name} - KSh ${bike.price.toFixed(2)} (${bike.quantity} in stock)`;
+            select.appendChild(option);
+          }
+        });
+      }
+
+      updateSaleTotal() {
+        const bikeIndex = document.getElementById('saleBikeSelect').value;
+        const quantity = parseInt(document.getElementById('saleQty').value) || 0;
+        const totalInput = document.getElementById('saleTotal');
+        
+        if (bikeIndex && this.inventory[bikeIndex]) {
+          const bike = this.inventory[bikeIndex];
+          const calculatedTotal = (bike.price * quantity).toFixed(2);
+          totalInput.value = calculatedTotal;
+        } else {
+          totalInput.value = '0.00';
+        }
+      }
+
+      showAddForm(editIndex = null) {
+        if (!this.authManager.hasRight('edit_inventory')) {
+          this.showNotification('You do not have permission to edit inventory', 'error');
+          return;
+        }
+        
+        const form = document.getElementById('addBikeForm');
+        const title = document.getElementById('formTitle');
+        const formEl = document.getElementById('bikeForm');
+        
+        if (editIndex !== null) {
+          title.innerHTML = '<i class="fas fa-edit"></i> Edit Bike';
+          const bike = this.inventory[editIndex];
+          
+          document.getElementById('editId').value = editIndex;
+          document.getElementById('bikeName').value = bike.name;
+          document.getElementById('productId').value = bike.productId;
+          document.getElementById('bikePrice').value = bike.price;
+          document.getElementById('bikeQty').value = bike.quantity;
+          document.getElementById('dateReceived').value = bike.dateReceived;
+          document.getElementById('receivedBy').value = bike.receivedBy || '';
+          document.getElementById('supplierName').value = bike.supplierName || '';
+          document.getElementById('bicycleSize').value = bike.bicycleSize || '';
+          document.getElementById('color').value = bike.color || '';
+          document.getElementById('condition').value = bike.condition || '';
+          document.getElementById('bikeCategory').value = bike.category || '';
+        } else {
+          title.innerHTML = '<i class="fas fa-bicycle"></i> Add New Bike';
+          formEl.reset();
+          document.getElementById('editId').value = '';
+          document.getElementById('dateReceived').value = this.currentDate;
+        }
+        
+        form.classList.add('active');
+      }
+
+      hideAddForm() {
+        document.getElementById('addBikeForm').classList.remove('active');
+      }
+      
+      showUserForm(editUserId = null) {
+        if (!this.authManager.hasRight('manage_users')) {
+          this.showNotification('You do not have permission to manage users', 'error');
+          return;
+        }
+        
+        const form = document.getElementById('userFormModal');
+        const title = document.getElementById('userFormTitle');
+        const formEl = document.getElementById('userForm');
+        const passwordInput = document.getElementById('userPassword');
+        
+        // Clear all checkboxes first
+        document.querySelectorAll('input[name="userRights"]').forEach(checkbox => {
+          checkbox.checked = false;
+        });
+        
+        if (editUserId !== null) {
+          title.innerHTML = '<i class="fas fa-user-edit"></i> Edit User';
+          const user = this.authManager.getUserById(editUserId);
+          
+          if (user) {
+            document.getElementById('userId').value = user.id;
+            document.getElementById('userUsername').value = user.username;
+            passwordInput.value = '';
+            passwordInput.required = false;
+            document.getElementById('userFullName').value = user.fullName;
+            document.getElementById('userEmail').value = user.email || '';
+            
+            // Check the rights checkboxes
+            user.rights.forEach(right => {
+              const checkbox = document.querySelector(`input[name="userRights"][value="${right}"]`);
+              if (checkbox) checkbox.checked = true;
+            });
+          }
+        } else {
+          title.innerHTML = '<i class="fas fa-user-plus"></i> Add New User';
+          formEl.reset();
+          document.getElementById('userId').value = '';
+          passwordInput.required = true;
+        }
+        
+        form.classList.add('active');
+      }
+      
+      hideUserForm() {
+        document.getElementById('userFormModal').classList.remove('active');
+      }
+
+      showSaleEditForm(saleId) {
+        if (!this.authManager.hasRight('edit_sales')) {
+          this.showNotification('You do not have permission to edit sales', 'error');
+          return;
+        }
+        
+        const sale = this.sales.find(s => s.id === saleId);
+        if (!sale) {
+          this.showNotification('Sale not found', 'error');
+          return;
+        }
+        
+        document.getElementById('editSaleId').value = sale.id;
+        document.getElementById('editSaleBikeName').value = sale.bikeName;
+        document.getElementById('editSaleDate').value = sale.date;
+        document.getElementById('editSaleQty').value = sale.quantity;
+        document.getElementById('editSaleTotal').value = sale.total.toFixed(2);
+        
+        document.getElementById('editSaleForm').classList.add('active');
+      }
+
+      hideSaleEditForm() {
+        document.getElementById('editSaleForm').classList.remove('active');
+      }
+
+      async saveBike(e) {
+        e.preventDefault();
+        
+        const editIndex = document.getElementById('editId').value;
+        const bike = {
+          name: document.getElementById('bikeName').value,
+          productId: document.getElementById('productId').value,
+          price: parseFloat(document.getElementById('bikePrice').value),
+          quantity: parseInt(document.getElementById('bikeQty').value),
+          dateReceived: document.getElementById('dateReceived').value,
+          receivedBy: document.getElementById('receivedBy').value,
+          supplierName: document.getElementById('supplierName').value,
+          bicycleSize: document.getElementById('bicycleSize').value,
+          color: document.getElementById('color').value,
+          condition: document.getElementById('condition').value,
+          category: document.getElementById('bikeCategory').value,
+          image: null // Handle image upload in a real app
+        };
+        
+        if (editIndex !== '') {
+          this.inventory[parseInt(editIndex)] = bike;
+          this.showNotification('Bike updated successfully', 'success');
+        } else {
+          this.inventory.push(bike);
+          this.showNotification('Bike added successfully', 'success');
+        }
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        
+        if (supabase) {
+          try {
+            if (editIndex !== '') {
+              const { error } = await supabase
+                .from('bikes')
+                .update(bike)
+                .eq('product_id', bike.productId);
+              if (error) throw error;
+            } else {
+              const { error } = await supabase
+                .from('bikes')
+                .insert([bike]);
+              if (error) throw error;
+            }
+            this.showNotification('Synced with database', 'success');
+          } catch (error) {
+            console.error('Supabase error:', error);
+            this.showNotification('Saved locally only', 'warning');
+          }
+        }
+        
+        this.hideAddForm();
+        this.renderAll();
+      }
+      
+      saveUser(e) {
+        e.preventDefault();
+        
+        const selectedRights = Array.from(document.querySelectorAll('input[name="userRights"]:checked')).map(cb => cb.value);
+        const userData = {
+          username: document.getElementById('userUsername').value,
+          password: document.getElementById('userPassword').value,
+          fullName: document.getElementById('userFullName').value,
+          email: document.getElementById('userEmail').value,
+          rights: selectedRights
+        };
+        
+        const userId = document.getElementById('userId').value;
+        
+        if (userId) {
+          if (this.authManager.updateUser(parseInt(userId), userData)) {
+            this.showNotification('User updated successfully', 'success');
+          } else {
+            this.showNotification('Error updating user', 'error');
+          }
+        } else {
+          if (!userData.password) {
+            this.showNotification('Password is required for new users', 'error');
+            return;
+          }
+          this.authManager.addUser(userData);
+          this.showNotification('User added successfully', 'success');
+        }
+        
+        this.hideUserForm();
+        this.renderUsers();
+      }
+      
+      editUser(userId) {
+        this.showUserForm(userId);
+      }
+      
+      deleteUser(userId) {
+        if (!confirm('Are you sure you want to delete this user?')) return;
+        
+        if (this.authManager.deleteUser(userId)) {
+          this.showNotification('User deleted successfully', 'success');
+          this.renderUsers();
+        } else {
+          this.showNotification('Cannot delete admin user', 'error');
+        }
+      }
+
+      editBike(index) {
+        this.showAddForm(index);
+      }
+
+      async deleteBike(index) {
+        if (!confirm('Are you sure you want to delete this bike?')) return;
+        
+        const bike = this.inventory[index];
+        this.inventory.splice(index, 1);
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        
+        if (supabase) {
+          try {
+            const { error } = await supabase
+              .from('bikes')
+              .delete()
+              .eq('product_id', bike.productId);
+            if (error) throw error;
+            this.showNotification('Bike deleted and synced', 'success');
+          } catch (error) {
+            console.error('Supabase error:', error);
+            this.showNotification('Deleted locally only', 'warning');
+          }
+        } else {
+          this.showNotification('Bike deleted', 'success');
+        }
+        
+        this.renderAll();
+      }
+
+      sellBike(index) {
+        document.getElementById('saleBikeSelect').value = index;
+        document.getElementById('saleQty').value = 1;
+        this.updateSaleTotal();
+        
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById('salesBtn').classList.add('active');
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('sales').classList.add('active');
+      }
+
+      async recordSale() {
+        const bikeIndex = document.getElementById('saleBikeSelect').value;
+        const quantity = parseInt(document.getElementById('saleQty').value);
+        const total = parseFloat(document.getElementById('saleTotal').value);
+        
+        if (!bikeIndex) {
+          this.showNotification('Please select a bike', 'error');
+          return;
+        }
+        
+        if (!quantity || quantity <= 0) {
+          this.showNotification('Please enter a valid quantity', 'error');
+          return;
+        }
+        
+        if (!total || total <= 0) {
+          this.showNotification('Please enter a valid total amount', 'error');
+          return;
+        }
+        
+        const bike = this.inventory[bikeIndex];
+        if (quantity > bike.quantity) {
+          this.showNotification(`Only ${bike.quantity} units available`, 'error');
+          return;
+        }
+        
+        bike.quantity -= quantity;
+        
+        const saleId = Date.now();
+        const sale = {
+          id: saleId,
+          date: this.currentDate,
+          bikeName: bike.name,
+          productId: bike.productId,
+          quantity,
+          price: total / quantity,
+          total,
+          image: bike.image
+        };
+        
+        this.sales.push(sale);
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
+        
+        if (supabase) {
+          try {
+            await supabase.from('bikes').update({ quantity: bike.quantity }).eq('product_id', bike.productId);
+            await supabase.from('sales').insert([sale]);
+            this.showNotification('Sale recorded and synced', 'success');
+          } catch (error) {
+            console.error('Supabase error:', error);
+            this.showNotification('Sale recorded locally only', 'warning');
+          }
+        } else {
+          this.showNotification('Sale recorded', 'success');
+        }
+        
+        document.getElementById('saleBikeSelect').value = '';
+        document.getElementById('saleQty').value = 1;
+        document.getElementById('saleTotal').value = '0.00';
+        
+        this.renderAll();
+      }
+
+      editSale(saleId) {
+        this.showSaleEditForm(saleId);
+      }
+
+      async saveSaleEdit(e) {
+        e.preventDefault();
+        
+        const saleId = parseInt(document.getElementById('editSaleId').value);
+        const saleIndex = this.sales.findIndex(s => s.id === saleId);
+        const sale = this.sales[saleIndex];
+        
+        const oldQuantity = sale.quantity;
+        const newQuantity = parseInt(document.getElementById('editSaleQty').value);
+        const newTotal = parseFloat(document.getElementById('editSaleTotal').value);
+        const newDate = document.getElementById('editSaleDate').value;
+        
+        if (isNaN(newQuantity) || newQuantity <= 0) {
+          this.showNotification('Invalid quantity', 'error');
+          return;
+        }
+        
+        if (isNaN(newTotal) || newTotal <= 0) {
+          this.showNotification('Invalid total', 'error');
+          return;
+        }
+        
+        if (!newDate) {
+          this.showNotification('Invalid date', 'error');
+          return;
+        }
+        
+        const bike = this.inventory.find(b => b.productId === sale.productId);
+        if (bike) {
+          bike.quantity += oldQuantity; // Restore old quantity
+          if (newQuantity > bike.quantity) {
+            this.showNotification(`Only ${bike.quantity} units available`, 'error');
+            bike.quantity -= oldQuantity; // Revert
+            return;
+          }
+          bike.quantity -= newQuantity; // Deduct new quantity
+        }
+        
+        this.sales[saleIndex] = {
+          ...sale,
+          date: newDate,
+          quantity: newQuantity,
+          total: newTotal,
+          price: newTotal / newQuantity
+        };
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
+        
+        if (supabase) {
+          try {
+            await supabase.from('bikes').update({ quantity: bike.quantity }).eq('product_id', sale.productId);
+            await supabase.from('sales').update({ 
+              date: newDate, 
+              quantity: newQuantity, 
+              total: newTotal, 
+              price: newTotal / newQuantity 
+            }).eq('id', saleId);
+            this.showNotification('Sale updated and synced', 'success');
+          } catch (error) {
+            console.error('Supabase error:', error);
+            this.showNotification('Sale updated locally only', 'warning');
+          }
+        } else {
+          this.showNotification('Sale updated', 'success');
+        }
+        
+        this.hideSaleEditForm();
+        this.renderAll();
+      }
+
+      async revertSale(saleId) {
+        if (!confirm('Revert this sale? Inventory will be updated.')) return;
+        
+        const saleIndex = this.sales.findIndex(s => s.id === saleId);
+        const sale = this.sales[saleIndex];
+        
+        const bike = this.inventory.find(b => b.productId === sale.productId);
+        if (bike) {
+          bike.quantity += sale.quantity;
+        }
+        
+        this.sales.splice(saleIndex, 1);
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
+        
+        if (supabase) {
+          try {
+            await supabase.from('bikes').update({ quantity: bike.quantity }).eq('product_id', sale.productId);
+            await supabase.from('sales').delete().eq('id', saleId);
+            this.showNotification('Sale reverted and synced', 'success');
+          } catch (error) {
+            console.error('Supabase error:', error);
+            this.showNotification('Sale reverted locally only', 'warning');
+          }
+        } else {
+          this.showNotification('Sale reverted', 'success');
+        }
+        
+        this.renderAll();
+      }
+
+      generateReport() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        
+        if (!startDate || !endDate) {
+          this.showNotification('Select date range', 'error');
+          return;
+        }
+        
+        this.reportData = this.sales.filter(sale => sale.date >= startDate && sale.date <= endDate);
+        
+        if (this.reportData.length === 0) {
+          document.getElementById('reportTable').innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-chart-bar"></i>
+              <h3>No Sales Found</h3>
+              <p>No sales between ${startDate} and ${endDate}</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const totalRevenue = this.reportData.reduce((sum, sale) => sum + sale.total, 0);
+        const totalUnits = this.reportData.reduce((sum, sale) => sum + sale.quantity, 0);
+        
+        const salesByProduct = {};
+        this.reportData.forEach(sale => {
+          if (!salesByProduct[sale.productId]) {
+            salesByProduct[sale.productId] = { name: sale.bikeName, quantity: 0, revenue: 0 };
+          }
+          salesByProduct[sale.productId].quantity += sale.quantity;
+          salesByProduct[sale.productId].revenue += sale.total;
+        });
+        
+        let tableHTML = `
+          <h3>Sales Report: ${startDate} to ${endDate}</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: #e8f5e9; padding: 1rem; border-radius: var(--radius); text-align: center;">
+              <h4 style="margin: 0 0 0.5rem 0; color: #2e7d32;">Total Revenue</h4>
+              <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">KSh ${totalRevenue.toFixed(2)}</p>
+            </div>
+            <div style="background: #e3f2fd; padding: 1rem; border-radius: var(--radius); text-align: center;">
+              <h4 style="margin: 0 0 0.5rem 0; color: #1565c0;">Units Sold</h4>
+              <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">${totalUnits}</p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Product ID</th>
+                <th>Units Sold</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        Object.values(salesByProduct).forEach(product => {
+          tableHTML += `
+            <tr>
+              <td>${product.name}</td>
+              <td>${product.productId || 'N/A'}</td>
+              <td>${product.quantity}</td>
+              <td>KSh ${product.revenue.toFixed(2)}</td>
+            </tr>
+          `;
+        });
+        
+        tableHTML += '</tbody></table>';
+        
+        document.getElementById('reportTable').innerHTML = tableHTML;
+      }
+
+      exportToPDF() {
+        if (this.reportData.length === 0) {
+          this.showNotification('Generate report first', 'warning');
+          return;
+        }
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(16);
+        doc.text('Sales Report', 20, 20);
+        doc.setFontSize(12);
+        doc.text(`Date Range: ${document.getElementById('startDate').value} to ${document.getElementById('endDate').value}`, 20, 30);
+        
+        let y = 50;
+        doc.text(`Total Revenue: KSh ${this.reportData.reduce((sum, s) => sum + s.total, 0).toFixed(2)}`, 20, y);
+        y += 10;
+        doc.text(`Total Units Sold: ${this.reportData.reduce((sum, s) => sum + s.quantity, 0)}`, 20, y);
+        y += 20;
+        
+        doc.autoTable({
+          startY: y,
+          head: [['Product', 'Product ID', 'Units Sold', 'Revenue']],
+          body: Object.values(this.reportData.reduce((acc, sale) => {
+            if (!acc[sale.productId]) acc[sale.productId] = { name: sale.bikeName, id: sale.productId, quantity: 0, revenue: 0 };
+            acc[sale.productId].quantity += sale.quantity;
+            acc[sale.productId].revenue += sale.total;
+            return acc;
+          }, {})).map(p => [p.name, p.id, p.quantity, `KSh ${p.revenue.toFixed(2)}`])
+        });
+        
+        doc.save('sales-report.pdf');
+        this.showNotification('PDF exported', 'success');
+      }
+
+      exportToExcel() {
+        if (this.reportData.length === 0) {
+          this.showNotification('Generate report first', 'warning');
+          return;
+        }
+        
+        const wb = XLSX.utils.book_new();
+        const wsData = [['Product', 'Product ID', 'Units Sold', 'Revenue']];
+        Object.values(this.reportData.reduce((acc, sale) => {
+          if (!acc[sale.productId]) acc[sale.productId] = { name: sale.bikeName, id: sale.productId, quantity: 0, revenue: 0 };
+          acc[sale.productId].quantity += sale.quantity;
+          acc[sale.productId].revenue += sale.total;
+          return acc;
+        }, {})).forEach(p => {
+          wsData.push([p.name, p.id, p.quantity, p.revenue]);
+        });
+        
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        XLSX.utils.book_append_sheet(wb, ws, 'Sales Report');
+        XLSX.writeFile(wb, 'sales-report.xlsx');
+        this.showNotification('Excel exported', 'success');
+      }
+
+      seedSampleData() {
+        if (!confirm('This will load sample data. Continue?')) return;
+        
+        this.inventory = [
+          {
+            name: "Trek FX 2 Disc Hybrid Bike",
+            productId: "TREK-FX2-2023",
+            price: 84999,
+            quantity: 5,
+            dateReceived: "2023-05-15",
+            receivedBy: "John Doe",
+            supplierName: "Trek Bikes",
+            bicycleSize: "M",
+            color: "Matte Black",
+            condition: "New",
+            category: "Hybrid"
+          },
+          {
+            name: "Specialized Rockhopper Mountain Bike",
+            productId: "SPEC-ROCKHOP-29",
+            price: 72999,
+            quantity: 3,
+            dateReceived: "2023-06-10",
+            receivedBy: "Jane Smith",
+            supplierName: "Specialized",
+            bicycleSize: "L",
+            color: "Gloss Red",
+            condition: "New",
+            category: "Mountain"
+          },
+          {
+            name: "Giant Defy Advanced Road Bike",
+            productId: "GIANT-DEFY-ADV",
+            price: 129999,
+            quantity: 2,
+            dateReceived: "2023-04-22",
+            receivedBy: "Mike Johnson",
+            supplierName: "Giant Bikes",
+            bicycleSize: "56cm",
+            color: "Carbon/Blue",
+            condition: "New",
+            category: "Road"
+          }
+        ];
+        
+        this.sales = [
+          {
+            id: 1,
+            date: "2023-07-01",
+            bikeName: "Trek FX 2 Disc Hybrid Bike",
+            productId: "TREK-FX2-2023",
+            quantity: 1,
+            price: 84999,
+            total: 84999
+          },
+          {
+            id: 2,
+            date: "2023-07-03",
+            bikeName: "Specialized Rockhopper Mountain Bike",
+            productId: "SPEC-ROCKHOP-29",
+            quantity: 1,
+            price: 72999,
+            total: 72999
+          }
+        ];
+        
+        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
+        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
+        
+        this.showNotification('Sample data loaded', 'success');
+        this.renderAll();
+      }
+    }
+
+    // Initialize the app
+    let manager;
+    document.addEventListener('DOMContentLoaded', () => {
+      const authManager = new AuthManager();
+      manager = new BikeShopManager(authManager);
+    });
+  </script>
+</body>
+</html>
