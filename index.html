@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bike Shop Manager (Supabase)</title>
+  <title>Bike Shop Manager - Login</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -31,465 +31,111 @@
       color: var(--text);
       margin: 0;
       line-height: 1.6;
-    }
-    
-    header {
-      background: var(--primary);
-      color: #fff;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 1rem;
+    }
+    
+    /* Login Page Styles */
+    .login-container {
       display: flex;
-      flex-wrap: wrap;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      width: 100%;
     }
     
-    header h1 {
-      font-size: 1.4rem;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    header h1 i {
-      color: var(--accent);
-    }
-    
-    nav {
-      display: flex;
-      gap: 0.5rem;
-    }
-    
-    nav button {
-      background: #34495e;
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    
-    nav button:hover {
-      background: #3d566e;
-    }
-    
-    nav button.active {
-      background: var(--accent);
-    }
-    
-    nav button.active:hover {
-      background: var(--accent-dark);
-    }
-    
-    main {
-      max-width: 1200px;
-      margin: 1.5rem auto;
-      padding: 0 1rem;
-    }
-    
-    .section {
-      display: none;
-    }
-    
-    .section.active {
-      display: block;
-      animation: fadeIn 0.4s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    h2 {
-      color: var(--primary);
-      margin-top: 0;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--border);
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .stat-card {
+    .login-card {
       background: #fff;
-      padding: 1.5rem;
+      padding: 2.5rem;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
-      transition: var(--transition);
-      border-left: 4px solid var(--accent);
     }
     
-    .stat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    }
-    
-    .stat-card h3 {
-      margin: 0 0 0.8rem 0;
-      font-size: 1rem;
-      color: #636e72;
-    }
-    
-    .stat-card p {
-      margin: 0;
-      font-size: 1.8rem;
-      font-weight: bold;
+    .login-card h1 {
       color: var(--primary);
-    }
-    
-    .add-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-    }
-    
-    .add-btn:hover {
-      background: var(--accent-dark);
-    }
-    
-    .btn-info {
-      background: var(--info);
-    }
-    
-    .btn-info:hover {
-      background: #2980b9;
-    }
-    
-    .top-controls {
-      display: flex;
-      gap: 0.8rem;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    
-    .item-list {
-      display: grid;
-      gap: 1.2rem;
-    }
-    
-    .item-card {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 1.5rem;
-      align-items: center;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-    }
-    
-    .item-card:hover {
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    }
-    
-    .item-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-    }
-    
-    .item-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .item-details h4 {
-      margin: 0;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .item-details p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-    
-    .item-props {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 0.5rem;
-    }
-    
-    .item-prop {
-      background: var(--muted);
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    
-    .item-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    
-    .item-actions button {
-      padding: 0.5rem 0.8rem;
-      border-radius: var(--radius);
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.9rem;
-    }
-    
-    .item-actions button.edit {
-      background: var(--warning);
-      color: #fff;
-    }
-    
-    .item-actions button.edit:hover {
-      background: #e67e22;
-    }
-    
-    .item-actions button.delete {
-      background: var(--danger);
-      color: #fff;
-    }
-    
-    .item-actions button.delete:hover {
-      background: #c0392b;
-    }
-    
-    .item-actions button.receipt {
-      background: var(--info);
-      color: #fff;
-    }
-    
-    .item-actions button.receipt:hover {
-      background: #2980b9;
-    }
-    
-    .form-modal {
-      position: fixed;
-      inset: 0;
+      margin: 0 0 1.5rem 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.5);
-      padding: 1rem;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: var(--transition);
-    }
-    
-    .form-modal.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .form-card {
-      background: #fff;
-      padding: 1.8rem;
-      border-radius: var(--radius);
-      max-width: 720px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: translateY(20px);
-      transition: var(--transition);
-    }
-    
-    .form-modal.active .form-card {
-      transform: translateY(0);
-    }
-    
-    .form-card h3 {
-      margin: 0 0 1.5rem 0;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
       gap: 0.5rem;
     }
     
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    
-    label {
+    .login-form {
       display: flex;
       flex-direction: column;
-      font-size: 0.9rem;
-      margin-bottom: 0.8rem;
-      color: #636e72;
-      font-weight: 500;
+      gap: 1.2rem;
     }
     
-    label span {
-      margin-bottom: 0.4rem;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
     }
     
-    input, select {
-      padding: 0.7rem;
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .form-group input {
+      padding: 0.8rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       font-family: inherit;
       transition: var(--transition);
     }
     
-    input:focus, select:focus {
+    .form-group input:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
     
-    .form-buttons {
-      display: flex;
-      gap: 0.8rem;
-      justify-content: flex-end;
-      margin-top: 1rem;
+    .password-container {
+      position: relative;
     }
     
-    .form-buttons button {
-      padding: 0.7rem 1.5rem;
-      border-radius: var(--radius);
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #636e72;
       cursor: pointer;
-      font-weight: 600;
-      transition: var(--transition);
     }
     
-    .form-buttons button[type="submit"] {
+    .login-btn {
       background: var(--accent);
       color: #fff;
       border: none;
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      margin-top: 0.5rem;
     }
     
-    .form-buttons button[type="submit"]:hover {
+    .login-btn:hover {
       background: var(--accent-dark);
     }
     
-    .form-buttons button[type="button"] {
-      background: #f8f9fa;
-      color: #636e72;
-      border: 1px solid var(--border);
-    }
-    
-    .form-buttons button[type="button"]:hover {
-      background: #e9ecef;
-    }
-    
-    .sale-form {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      margin-bottom: 1.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.2rem;
-      align-items: end;
-      box-shadow: var(--shadow);
-    }
-    
-    .report-controls {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      margin-bottom: 1.5rem;
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      align-items: center;
-      box-shadow: var(--shadow);
-    }
-    
-    #reportTable {
-      background: #fff;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      padding: 1.5rem;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    th, td {
-      padding: 0.8rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    th {
-      background: var(--muted);
-      font-weight: 600;
-      color: var(--primary);
-    }
-    
-    tr:hover {
-      background: #f8f9fa;
-    }
-    
-    .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-    
-    .status-online {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-    
-    .status-offline {
+    .error-message {
+      color: var(--danger);
+      margin-top: 1rem;
+      padding: 0.5rem;
       background: #ffebee;
-      color: #c62828;
-    }
-    
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(39, 174, 96, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--accent);
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+      border-radius: var(--radius);
+      display: none;
     }
     
     .notification {
@@ -527,245 +173,82 @@
       background: var(--warning);
     }
     
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
+    .forgot-password {
+      color: var(--info);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    .demo-accounts {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .demo-accounts h3 {
+      font-size: 1rem;
       color: #636e72;
+      margin-bottom: 0.8rem;
     }
     
-    .empty-state i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #b2bec3;
+    .demo-account {
+      background: #f8f9fa;
+      padding: 0.7rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      text-align: left;
+      font-size: 0.9rem;
     }
     
-    .empty-state p {
-      margin: 0.5rem 0;
-    }
-    
-    @media (max-width: 768px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-      
-      .item-card {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      
-      .item-props {
-        justify-content: center;
-      }
-      
-      .item-actions {
-        flex-direction: row;
-        justify-content: center;
-      }
-      
-      header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: stretch;
-      }
-      
-      nav {
-        flex-wrap: wrap;
-      }
-      
-      .sale-form, .report-controls {
-        grid-template-columns: 1fr;
-      }
+    .demo-account:last-child {
+      margin-bottom: 0;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1><i class="fas fa-bicycle"></i> BikeShop Retail Manager</h1>
-    <nav>
-      <button id="dashboardBtn" class="active"><i class="fas fa-chart-line"></i> Dashboard</button>
-      <button id="inventoryBtn"><i class="fas fa-warehouse"></i> Inventory</button>
-      <button id="salesBtn"><i class="fas fa-shopping-cart"></i> Sales</button>
-      <button id="reportsBtn"><i class="fas fa-chart-bar"></i> Reports</button>
-    </nav>
-  </header>
-
-  <main>
-    <!-- Dashboard -->
-    <section id="dashboard" class="section active">
-      <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
-      <div class="stats-grid">
-        <div class="stat-card"><h3><i class="fas fa-money-bill-wave"></i> Total Inventory Value</h3><p id="totalValue">KSh 0.00</p></div>
-        <div class="stat-card"><h3><i class="fas fa-bicycle"></i> Bikes in Stock</h3><p id="totalStock">0</p></div>
-        <div class="stat-card"><h3><i class="fas fa-calendar-day"></i> Today's Sales</h3><p id="todaySales">KSh 0.00</p></div>
-        <div class="stat-card"><h3><i class="fas fa-chart-pie"></i> Total Sales</h3><p id="totalSales">KSh 0.00</p></div>
-      </div>
-    </section>
-
-    <!-- Inventory -->
-    <section id="inventory" class="section">
-      <h2><i class="fas fa-warehouse"></i> Inventory Management</h2>
-      <div class="top-controls">
-        <button id="addBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add New Bike</button>
-        <button id="seedDataBtn" class="add-btn btn-info"><i class="fas fa-database"></i> Seed sample data</button>
-        <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
-          <span style="color:#666;font-size:.9rem">Supabase:</span>
-          <span id="supabaseStatus" class="status-indicator status-offline">checking...</span>
+  <!-- Login Page -->
+  <div class="login-container" id="loginPage">
+    <div class="login-card">
+      <h1><i class="fas fa-bicycle"></i> Bike Shop Manager</h1>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
         </div>
-      </div>
-      <div id="inventoryList" class="item-list">
-        <div class="empty-state">
-          <i class="fas fa-bicycle"></i>
-          <h3>No Bikes in Inventory</h3>
-          <p>Get started by adding your first bike</p>
-          <button id="addFirstBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add Bike</button>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-container">
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="button" class="toggle-password" id="togglePassword">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Sales -->
-    <section id="sales" class="section">
-      <h2><i class="fas fa-shopping-cart"></i> Record Sale</h2>
-      <div class="sale-form">
-        <label>
-          <span><i class="fas fa-bicycle"></i> Select Bike</span>
-          <select id="saleBikeSelect">
-            <option value="">Loading bikes...</option>
-          </select>
-        </label>
-        <label>
-          <span><i class="fas fa-hashtag"></i> Quantity</span>
-          <input type="number" id="saleQty" min="1" value="1">
-        </label>
-        <div>
-          <label>
-            <span><i class="fas fa-money-bill"></i> Total Amount</span>
-            <div style="font-size: 1.2rem; padding: 0.7rem; background: #f8f9fa; border-radius: var(--radius);">
-              KSh <span id="saleTotal">0.00</span>
-            </div>
-          </label>
-          <button id="recordSaleBtn" class="add-btn" style="margin-top: 0.7rem; width: 100%;">
-            <i class="fas fa-check"></i> Record Sale
-          </button>
-        </div>
-      </div>
-      
-      <h3><i class="fas fa-history"></i> Recent Sales</h3>
-      <div id="salesList" class="item-list">
-        <div class="empty-state">
-          <i class="fas fa-receipt"></i>
-          <h3>No Sales Recorded</h3>
-          <p>Record a sale to see it here</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reports -->
-    <section id="reports" class="section">
-      <h2><i class="fas fa-chart-bar"></i> Sales Reports</h2>
-      <div class="report-controls">
-        <label>
-          <span><i class="fas fa-calendar"></i> Start Date</span>
-          <input type="date" id="startDate">
-        </label>
-        <label>
-          <span><i class="fas fa-calendar"></i> End Date</span>
-          <input type="date" id="endDate">
-        </label>
-        <button id="generateReport" class="add-btn" style="align-self: flex-end;">
-          <i class="fas fa-sync"></i> Generate Report
-        </button>
-      </div>
-      <div id="reportTable">
-        <div class="empty-state">
-          <i class="fas fa-chart-bar"></i>
-          <h3>No Report Generated</h3>
-          <p>Select a date range and generate a report</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Modal (hidden by default) -->
-  <div id="addBikeForm" class="form-modal">
-    <div class="form-card">
-      <h3 id="formTitle"><i class="fas fa-bicycle"></i> Add New Bike</h3>
-      <form id="bikeForm">
-        <input type="hidden" id="editId">
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-font"></i> Name</span>
-            <input type="text" id="bikeName" required>
-          </label>
-          <label>
-            <span><i class="fas fa-barcode"></i> Product ID</span>
-            <input type="text" id="productId" required>
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-tag"></i> Price (KSh)</span>
-            <input type="number" id="bikePrice" step="0.01" min="0" required>
-          </label>
-          <label>
-            <span><i class="fas fa-cubes"></i> Quantity</span>
-            <input type="number" id="bikeQty" min="0" required>
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-calendar"></i> Date Received</span>
-            <input type="date" id="dateReceived" required>
-          </label>
-          <label>
-            <span><i class="fas fa-user"></i> Received By</span>
-            <input type="text" id="receivedBy" required>
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-truck"></i> Supplier Name</span>
-            <input type="text" id="supplierName">
-          </label>
-          <label>
-            <span><i class="fas fa-ruler"></i> Bicycle Size</span>
-            <input type="text" id="bicycleSize" placeholder="e.g. M / 54cm">
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-palette"></i> Color</span>
-            <input type="text" id="color">
-          </label>
-          <label>
-            <span><i class="fas fa-check-circle"></i> Condition</span>
-            <select id="condition">
-              <option>New</option>
-              <option>Used</option>
-              <option>Refurbished</option>
-              <option>Damaged</option>
-            </select>
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <span><i class="fas fa-layer-group"></i> Category</span>
-            <select id="bikeCategory">
-              <option value="Mountain">Mountain</option>
-              <option value="Road">Road</option>
-              <option value="Hybrid">Hybrid</option>
-              <option value="Electric">Electric</option>
-            </select>
-          </label>
-          <label>
-            <span><i class="fas fa-image"></i> Product Image</span>
-            <input type="file" id="bikeImage" accept="image/*">
-          </label>
-        </div>
-        <div class="form-buttons">
-          <button type="submit" class="add-btn"><i class="fas fa-save"></i> Save</button>
-          <button type="button" id="cancelEdit"><i class="fas fa-times"></i> Cancel</button>
+        <button type="submit" class="login-btn">Login</button>
+        <a href="#" class="forgot-password">Forgot password?</a>
+        <div class="error-message" id="loginError">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorText">Invalid username or password</span>
         </div>
       </form>
+      
+      <div class="demo-accounts">
+        <h3>Demo Accounts:</h3>
+        <div class="demo-account">
+          <strong>Admin:</strong> admin / admin123
+        </div>
+        <div class="demo-account">
+          <strong>Manager:</strong> manager / manager123
+        </div>
+        <div class="demo-account">
+          <strong>Staff:</strong> staff / staff123
+        </div>
+      </div>
     </div>
   </div>
 
@@ -775,734 +258,124 @@
     <span id="notificationText"></span>
   </div>
 
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
-    // ---------- Environment Variables ----------
-    // In a production environment, these would be set in your deployment platform
-    // For development, create a .env file and load it with a build process
-    // This is a fallback for demonstration purposes
-    const SUPABASE_URL = window.SUPABASE_URL || 'https://exttxuqfayvsubzbuvai.supabase.co';
-    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4dHR4dXFmYXl2c3ViemJ1dmFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMDQ2MTcsImV4cCI6MjA3Mzc4MDYxN30.0LJCw0JbVooZ3cfxnOYcG9R9UexKdFbiZtp-pQ6eMFA';
-
-    // Initialize Supabase client
-    let supabase = null;
-    try {
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        document.getElementById('supabaseStatus').textContent = 'connected';
-        document.getElementById('supabaseStatus').className = 'status-indicator status-online';
+    // Demo user accounts
+    const users = [
+      {
+        id: 1,
+        username: 'admin',
+        password: 'admin123',
+        fullName: 'Administrator',
+        email: 'admin@bikeshop.com',
+        role: 'admin',
+        rights: ['view_dashboard', 'view_inventory', 'edit_inventory', 'view_sales', 
+                'record_sales', 'view_reports', 'generate_reports', 'manage_users']
+      },
+      {
+        id: 2,
+        username: 'manager',
+        password: 'manager123',
+        fullName: 'Shop Manager',
+        email: 'manager@bikeshop.com',
+        role: 'manager',
+        rights: ['view_dashboard', 'view_inventory', 'edit_inventory', 'view_sales', 
+                'record_sales', 'view_reports', 'generate_reports']
+      },
+      {
+        id: 3,
+        username: 'staff',
+        password: 'staff123',
+        fullName: 'Sales Staff',
+        email: 'staff@bikeshop.com',
+        role: 'staff',
+        rights: ['view_dashboard', 'view_inventory', 'view_sales', 'record_sales']
       }
-    } catch (error) {
-      console.warn('Supabase client initialization failed:', error);
-      document.getElementById('supabaseStatus').textContent = 'connection failed';
-    }
+    ];
 
-    // ---------- BikeShopManager Class ----------
-    class BikeShopManager {
-      constructor() {
-        this.inventory = [];
-        this.sales = [];
-        this.currentDate = new Date().toISOString().split('T')[0];
-        this.isLoading = false;
-        this.initEventListeners();
-        this.loadAll();
-      }
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const togglePasswordButton = document.getElementById('togglePassword');
+    const loginError = document.getElementById('loginError');
+    const errorText = document.getElementById('errorText');
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notificationText');
 
-      async loadAll() {
-        this.showLoading(true);
-        
-        // Load from localStorage first
-        try {
-          const inventoryData = localStorage.getItem('bikeInventory');
-          const salesData = localStorage.getItem('bikeSales');
-          
-          this.inventory = inventoryData ? JSON.parse(inventoryData) : [];
-          this.sales = salesData ? JSON.parse(salesData) : [];
-          
-          this.renderAll();
-        } catch (error) {
-          console.error('Error loading from localStorage:', error);
-          this.showNotification('Error loading local data', 'error');
-        }
-
-        // Try to fetch from Supabase if available
-        if (supabase) {
-          try {
-            // Load inventory from Supabase
-            const { data: bikes, error: bikeError } = await supabase
-              .from('bikes')
-              .select('*');
-              
-            if (!bikeError && bikes && bikes.length > 0) {
-              this.inventory = bikes.map(b => ({
-                name: b.name,
-                productId: b.product_id || b.productId || b.id || '',
-                price: parseFloat(b.price) || 0,
-                quantity: parseInt(b.quantity) || 0,
-                dateReceived: b.date_received || '',
-                category: b.category || '',
-                image: b.image || null,
-                supplierName: b.supplier_name || '',
-                bicycleSize: b.bicycle_size || '',
-                color: b.color || '',
-                condition: b.condition || '',
-                receivedBy: b.received_by || ''
-              }));
-              
-              localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
-            }
-            
-            // Load sales from Supabase
-            const { data: sales, error: salesError } = await supabase
-              .from('sales')
-              .select('*');
-              
-            if (!salesError && sales && sales.length > 0) {
-              this.sales = sales.map(s => ({
-                date: s.date,
-                bikeName: s.bike_name,
-                productId: s.product_id,
-                quantity: s.quantity,
-                price: parseFloat(s.price) || 0,
-                total: parseFloat(s.total) || 0,
-                image: s.image || null
-              }));
-              
-              localStorage.setItem('bikeSales', JSON.stringify(this.sales));
-            }
-            
-            this.renderAll();
-            this.showNotification('Data synchronized with Supabase', 'success');
-          } catch (error) {
-            console.warn('Could not fetch from Supabase — working offline:', error);
-            this.showNotification('Working in offline mode', 'warning');
-          }
-        }
-        
-        this.showLoading(false);
-      }
-
-      initEventListeners() {
-        // Navigation
-        document.querySelectorAll('nav button').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(e.target.id.replace('Btn','')).classList.add('active');
-          });
-        });
-
-        // Inventory controls
-        document.getElementById('addBikeBtn').addEventListener('click', () => this.showAddForm());
-        document.getElementById('addFirstBikeBtn').addEventListener('click', () => this.showAddForm());
-        document.getElementById('bikeForm').addEventListener('submit', (e) => this.saveBike(e));
-        document.getElementById('cancelEdit').addEventListener('click', () => this.hideAddForm());
-        document.getElementById('seedDataBtn').addEventListener('click', () => this.seedSampleData());
-
-        // Sales controls
-        document.getElementById('saleBikeSelect').addEventListener('change', () => this.updateSaleTotal());
-        document.getElementById('saleQty').addEventListener('input', () => this.updateSaleTotal());
-        document.getElementById('recordSaleBtn').addEventListener('click', () => this.recordSale());
-
-        // Reports controls
-        document.getElementById('generateReport').addEventListener('click', () => this.generateReport());
-
-        // Set default dates
-        document.getElementById('startDate').value = this.currentDate;
-        document.getElementById('endDate').value = this.currentDate;
-      }
-
-      showLoading(show) {
-        this.isLoading = show;
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => {
-          if (show) {
-            btn.setAttribute('disabled', 'true');
-          } else {
-            btn.removeAttribute('disabled');
-          }
-        });
-        
-        if (show) {
-          document.body.style.opacity = '0.8';
-          document.body.style.pointerEvents = 'none';
-        } else {
-          document.body.style.opacity = '';
-          document.body.style.pointerEvents = '';
-        }
-      }
-
-      showNotification(message, type = 'success') {
-        const notification = document.getElementById('notification');
-        const text = document.getElementById('notificationText');
-        
-        text.textContent = message;
-        notification.className = `notification ${type}`;
-        notification.classList.add('show');
-        
-        setTimeout(() => {
-          notification.classList.remove('show');
-        }, 3000);
-      }
-
-      renderAll() {
-        this.renderInventory();
-        this.renderSales();
-        this.updateDashboard();
-        this.populateSaleSelect();
-      }
-
-      renderInventory() {
-        const list = document.getElementById('inventoryList');
-        
-        if (!this.inventory || this.inventory.length === 0) {
-          list.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-bicycle"></i>
-              <h3>No Bikes in Inventory</h3>
-              <p>Get started by adding your first bike</p>
-              <button id="addFirstBikeBtn" class="add-btn"><i class="fas fa-plus"></i> Add Bike</button>
-            </div>
-          `;
-          document.getElementById('addFirstBikeBtn').addEventListener('click', () => this.showAddForm());
-          return;
-        }
-        
-        list.innerHTML = this.inventory.map((bike, index) => `
-          <div class="item-card">
-            ${bike.image ? `<img src="${bike.image}" alt="${bike.name}">` : 
-              `<div style="width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:8px;">
-                 <i class="fas fa-bicycle" style="font-size:2rem;color:#b2bec3;"></i>
-               </div>`}
-            <div class="item-details">
-              <h4>${bike.name} <span style="background: #e8f5e9; color: #2e7d32; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.7rem; font-weight: normal;">${bike.category}</span></h4>
-              <p><strong>Product ID:</strong> ${bike.productId}</p>
-              <p><strong>Price:</strong> KSh ${parseFloat(bike.price||0).toFixed(2)} | <strong>Qty:</strong> ${bike.quantity}</p>
-              <div class="item-props">
-                <span class="item-prop"><i class="fas fa-calendar"></i> ${bike.dateReceived}</span>
-                <span class="item-prop"><i class="fas fa-user"></i> ${bike.receivedBy || '-'}</span>
-                <span class="item-prop"><i class="fas fa-truck"></i> ${bike.supplierName || '-'}</span>
-                <span class="item-prop"><i class="fas fa-ruler"></i> ${bike.bicycleSize || '-'}</span>
-                <span class="item-prop"><i class="fas fa-palette"></i> ${bike.color || '-'}</span>
-                <span class="item-prop"><i class="fas fa-check-circle"></i> ${bike.condition || '-'}</span>
-              </div>
-            </div>
-            <div class="item-actions">
-              <button class="edit" onclick="manager.editBike(${index})"><i class="fas fa-edit"></i> Edit</button>
-              <button class="delete" onclick="manager.deleteBike(${index})"><i class="fas fa-trash"></i> Delete</button>
-              <button class="receipt" onclick="manager.sellBike(${index})"><i class="fas fa-shopping-cart"></i> Sell</button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      renderSales() {
-        const list = document.getElementById('salesList');
-        
-        if (!this.sales || this.sales.length === 0) {
-          list.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-receipt"></i>
-              <h3>No Sales Recorded</h3>
-              <p>Record a sale to see it here</p>
-            </div>
-          `;
-          return;
-        }
-        
-        // Show only the 10 most recent sales
-        const recentSales = [...this.sales].reverse().slice(0, 10);
-        
-        list.innerHTML = recentSales.map(sale => `
-          <div class="item-card">
-            ${sale.image ? `<img src="${sale.image}" alt="${sale.bikeName}">` : 
-              `<div style="width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:8px;">
-                 <i class="fas fa-bicycle" style="font-size:2rem;color:#b2bec3;"></i>
-               </div>`}
-            <div class="item-details">
-              <h4>${sale.bikeName}</h4>
-              <p><strong>Product ID:</strong> ${sale.productId}</p>
-              <p><strong>Date:</strong> ${sale.date} | <strong>Qty:</strong> ${sale.quantity}</p>
-              <p><strong>Total:</strong> KSh ${parseFloat(sale.total||0).toFixed(2)}</p>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      updateDashboard() {
-        // Calculate total inventory value
-        const totalValue = this.inventory.reduce((sum, bike) => sum + (bike.price * bike.quantity), 0);
-        document.getElementById('totalValue').textContent = `KSh ${totalValue.toFixed(2)}`;
-        
-        // Calculate total stock
-        const totalStock = this.inventory.reduce((sum, bike) => sum + bike.quantity, 0);
-        document.getElementById('totalStock').textContent = totalStock;
-        
-        // Calculate today's sales
-        const todaySales = this.sales
-          .filter(sale => sale.date === this.currentDate)
-          .reduce((sum, sale) => sum + sale.total, 0);
-        document.getElementById('todaySales').textContent = `KSh ${todaySales.toFixed(2)}`;
-        
-        // Calculate total sales
-        const totalSales = this.sales.reduce((sum, sale) => sum + sale.total, 0);
-        document.getElementById('totalSales').textContent = `KSh ${totalSales.toFixed(2)}`;
-      }
-
-      populateSaleSelect() {
-        const select = document.getElementById('saleBikeSelect');
-        select.innerHTML = '<option value="">Select a bike</option>';
-        
-        this.inventory.forEach((bike, index) => {
-          if (bike.quantity > 0) {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = `${bike.name} - KSh ${bike.price.toFixed(2)} (${bike.quantity} in stock)`;
-            select.appendChild(option);
-          }
-        });
-      }
-
-      updateSaleTotal() {
-        const bikeIndex = document.getElementById('saleBikeSelect').value;
-        const quantity = parseInt(document.getElementById('saleQty').value) || 0;
-        
-        if (bikeIndex && this.inventory[bikeIndex]) {
-          const bike = this.inventory[bikeIndex];
-          const total = bike.price * quantity;
-          document.getElementById('saleTotal').textContent = total.toFixed(2);
-        } else {
-          document.getElementById('saleTotal').textContent = '0.00';
-        }
-      }
-
-      showAddForm(editIndex = null) {
-        const form = document.getElementById('addBikeForm');
-        const title = document.getElementById('formTitle');
-        const formEl = document.getElementById('bikeForm');
-        
-        if (editIndex !== null) {
-          // Editing existing bike
-          title.innerHTML = '<i class="fas fa-edit"></i> Edit Bike';
-          const bike = this.inventory[editIndex];
-          
-          document.getElementById('editId').value = editIndex;
-          document.getElementById('bikeName').value = bike.name;
-          document.getElementById('productId').value = bike.productId;
-          document.getElementById('bikePrice').value = bike.price;
-          document.getElementById('bikeQty').value = bike.quantity;
-          document.getElementById('dateReceived').value = bike.dateReceived;
-          document.getElementById('receivedBy').value = bike.receivedBy || '';
-          document.getElementById('supplierName').value = bike.supplierName || '';
-          document.getElementById('bicycleSize').value = bike.bicycleSize || '';
-          document.getElementById('color').value = bike.color || '';
-          document.getElementById('condition').value = bike.condition || '';
-          document.getElementById('bikeCategory').value = bike.category || '';
-        } else {
-          // Adding new bike
-          title.innerHTML = '<i class="fas fa-bicycle"></i> Add New Bike';
-          formEl.reset();
-          document.getElementById('editId').value = '';
-          document.getElementById('dateReceived').value = this.currentDate;
-        }
-        
-        form.classList.add('active');
-      }
-
-      hideAddForm() {
-        document.getElementById('addBikeForm').classList.remove('active');
-      }
-
-      async saveBike(e) {
-        e.preventDefault();
-        
-        const editIndex = document.getElementById('editId').value;
-        const bike = {
-          name: document.getElementById('bikeName').value,
-          productId: document.getElementById('productId').value,
-          price: parseFloat(document.getElementById('bikePrice').value),
-          quantity: parseInt(document.getElementById('bikeQty').value),
-          dateReceived: document.getElementById('dateReceived').value,
-          receivedBy: document.getElementById('receivedBy').value,
-          supplierName: document.getElementById('supplierName').value,
-          bicycleSize: document.getElementById('bicycleSize').value,
-          color: document.getElementById('color').value,
-          condition: document.getElementById('condition').value,
-          category: document.getElementById('bikeCategory').value,
-          image: null // Handle image upload in a real app
-        };
-        
-        if (editIndex) {
-          // Update existing bike
-          this.inventory[editIndex] = bike;
-          this.showNotification('Bike updated successfully', 'success');
-        } else {
-          // Add new bike
-          this.inventory.push(bike);
-          this.showNotification('Bike added successfully', 'success');
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
-        
-        // Try to save to Supabase if available
-        if (supabase) {
-          try {
-            if (editIndex) {
-              // Update in Supabase
-              const { error } = await supabase
-                .from('bikes')
-                .update({
-                  name: bike.name,
-                  product_id: bike.productId,
-                  price: bike.price,
-                  quantity: bike.quantity,
-                  date_received: bike.dateReceived,
-                  received_by: bike.receivedBy,
-                  supplier_name: bike.supplierName,
-                  bicycle_size: bike.bicycleSize,
-                  color: bike.color,
-                  condition: bike.condition,
-                  category: bike.category
-                })
-                .eq('product_id', bike.productId);
-                
-              if (error) throw error;
-            } else {
-              // Insert into Supabase
-              const { error } = await supabase
-                .from('bikes')
-                .insert([{
-                  name: bike.name,
-                  product_id: bike.productId,
-                  price: bike.price,
-                  quantity: bike.quantity,
-                  date_received: bike.dateReceived,
-                  received_by: bike.receivedBy,
-                  supplier_name: bike.supplierName,
-                  bicycle_size: bike.bicycleSize,
-                  color: bike.color,
-                  condition: bike.condition,
-                  category: bike.category
-                }]);
-                
-              if (error) throw error;
-            }
-            
-            this.showNotification('Data synchronized with Supabase', 'success');
-          } catch (error) {
-            console.error('Error saving to Supabase:', error);
-            this.showNotification('Saved locally - sync failed', 'warning');
-          }
-        }
-        
-        this.hideAddForm();
-        this.renderAll();
-      }
-
-      editBike(index) {
-        this.showAddForm(index);
-      }
-
-      async deleteBike(index) {
-        if (!confirm('Are you sure you want to delete this bike?')) return;
-        
-        const bike = this.inventory[index];
-        this.inventory.splice(index, 1);
-        
-        // Save to localStorage
-        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
-        
-        // Try to delete from Supabase if available
-        if (supabase) {
-          try {
-            const { error } = await supabase
-              .from('bikes')
-              .delete()
-              .eq('product_id', bike.productId);
-              
-            if (error) throw error;
-            
-            this.showNotification('Bike deleted and sync successful', 'success');
-          } catch (error) {
-            console.error('Error deleting from Supabase:', error);
-            this.showNotification('Deleted locally - sync failed', 'warning');
-          }
-        } else {
-          this.showNotification('Bike deleted', 'success');
-        }
-        
-        this.renderAll();
-      }
-
-      sellBike(index) {
-        document.getElementById('saleBikeSelect').value = index;
-        document.getElementById('saleQty').value = 1;
-        this.updateSaleTotal();
-        
-        // Switch to sales tab
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-        document.getElementById('salesBtn').classList.add('active');
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById('sales').classList.add('active');
-      }
-
-      async recordSale() {
-        const bikeIndex = document.getElementById('saleBikeSelect').value;
-        const quantity = parseInt(document.getElementById('saleQty').value);
-        
-        if (!bikeIndex || bikeIndex === '') {
-          this.showNotification('Please select a bike', 'error');
-          return;
-        }
-        
-        if (isNaN(quantity) || quantity <= 0) {
-          this.showNotification('Please enter a valid quantity', 'error');
-          return;
-        }
-        
-        const bike = this.inventory[bikeIndex];
-        
-        if (quantity > bike.quantity) {
-          this.showNotification(`Only ${bike.quantity} units available`, 'error');
-          return;
-        }
-        
-        // Update inventory
-        bike.quantity -= quantity;
-        
-        // Record sale
-        const sale = {
-          date: this.currentDate,
-          bikeName: bike.name,
-          productId: bike.productId,
-          quantity: quantity,
-          price: bike.price,
-          total: bike.price * quantity,
-          image: bike.image
-        };
-        
-        this.sales.push(sale);
-        
-        // Save to localStorage
-        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
-        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
-        
-        // Try to save to Supabase if available
-        if (supabase) {
-          try {
-            // Update bike quantity in Supabase
-            const { error: updateError } = await supabase
-              .from('bikes')
-              .update({ quantity: bike.quantity })
-              .eq('product_id', bike.productId);
-              
-            if (updateError) throw updateError;
-            
-            // Add sale to Supabase
-            const { error: salesError } = await supabase
-              .from('sales')
-              .insert([{
-                date: sale.date,
-                bike_name: sale.bikeName,
-                product_id: sale.productId,
-                quantity: sale.quantity,
-                price: sale.price,
-                total: sale.total
-              }]);
-              
-            if (salesError) throw salesError;
-            
-            this.showNotification('Sale recorded and sync successful', 'success');
-          } catch (error) {
-            console.error('Error saving to Supabase:', error);
-            this.showNotification('Sale recorded locally - sync failed', 'warning');
-          }
-        } else {
-          this.showNotification('Sale recorded', 'success');
-        }
-        
-        // Reset form
-        document.getElementById('saleBikeSelect').value = '';
-        document.getElementById('saleQty').value = 1;
-        document.getElementById('saleTotal').textContent = '0.00';
-        
-        this.renderAll();
-      }
-
-      generateReport() {
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        
-        if (!startDate || !endDate) {
-          this.showNotification('Please select both start and end dates', 'error');
-          return;
-        }
-        
-        const filteredSales = this.sales.filter(sale => {
-          return sale.date >= startDate && sale.date <= endDate;
-        });
-        
-        if (filteredSales.length === 0) {
-          document.getElementById('reportTable').innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-chart-bar"></i>
-              <h3>No Sales in Date Range</h3>
-              <p>No sales recorded between ${startDate} and ${endDate}</p>
-            </div>
-          `;
-          return;
-        }
-        
-        // Calculate totals
-        const totalRevenue = filteredSales.reduce((sum, sale) => sum + sale.total, 0);
-        const totalUnits = filteredSales.reduce((sum, sale) => sum + sale.quantity, 0);
-        
-        // Group by product
-        const salesByProduct = {};
-        filteredSales.forEach(sale => {
-          if (!salesByProduct[sale.productId]) {
-            salesByProduct[sale.productId] = {
-              name: sale.bikeName,
-              quantity: 0,
-              revenue: 0
-            };
-          }
-          
-          salesByProduct[sale.productId].quantity += sale.quantity;
-          salesByProduct[sale.productId].revenue += sale.total;
-        });
-        
-        // Create report table
-        let tableHTML = `
-          <h3>Sales Report: ${startDate} to ${endDate}</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="background: #e8f5e9; padding: 1rem; border-radius: var(--radius);">
-              <h4 style="margin: 0 0 0.5rem 0; color: #2e7d32;">Total Revenue</h4>
-              <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">KSh ${totalRevenue.toFixed(2)}</p>
-            </div>
-            <div style="background: #e3f2fd; padding: 1rem; border-radius: var(--radius);">
-              <h4 style="margin: 0 0 0.5rem 0; color: #1565c0;">Units Sold</h4>
-              <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">${totalUnits}</p>
-            </div>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Product ID</th>
-                <th>Units Sold</th>
-                <th>Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-        
-        for (const productId in salesByProduct) {
-          tableHTML += `
-            <tr>
-              <td>${salesByProduct[productId].name}</td>
-              <td>${productId}</td>
-              <td>${salesByProduct[productId].quantity}</td>
-              <td>KSh ${salesByProduct[productId].revenue.toFixed(2)}</td>
-            </tr>
-          `;
-        }
-        
-        tableHTML += `
-            </tbody>
-          </table>
-        `;
-        
-        document.getElementById('reportTable').innerHTML = tableHTML;
-      }
-
-      seedSampleData() {
-        if (!confirm('This will replace your current data with sample data. Continue?')) return;
-        
-        this.inventory = [
-          {
-            name: "Trek FX 2 Disc Hybrid Bike",
-            productId: "TREK-FX2-2023",
-            price: 84999,
-            quantity: 5,
-            dateReceived: "2023-05-15",
-            receivedBy: "John Doe",
-            supplierName: "Trek Bikes",
-            bicycleSize: "M",
-            color: "Matte Black",
-            condition: "New",
-            category: "Hybrid"
-          },
-          {
-            name: "Specialized Rockhopper Mountain Bike",
-            productId: "SPEC-ROCKHOP-29",
-            price: 72999,
-            quantity: 3,
-            dateReceived: "2023-06-10",
-            receivedBy: "Jane Smith",
-            supplierName: "Specialized",
-            bicycleSize: "L",
-            color: "Gloss Red",
-            condition: "New",
-            category: "Mountain"
-          },
-          {
-            name: "Giant Defy Advanced Road Bike",
-            productId: "GIANT-DEFY-ADV",
-            price: 129999,
-            quantity: 2,
-            dateReceived: "2023-04-22",
-            receivedBy: "Mike Johnson",
-            supplierName: "Giant Bikes",
-            bicycleSize: "56cm",
-            color: "Carbon/Blue",
-            condition: "New",
-            category: "Road"
-          }
-        ];
-        
-        this.sales = [
-          {
-            date: "2023-07-01",
-            bikeName: "Trek FX 2 Disc Hybrid Bike",
-            productId: "TREK-FX2-2023",
-            quantity: 1,
-            price: 84999,
-            total: 84999
-          },
-          {
-            date: "2023-07-03",
-            bikeName: "Specialized Rockhopper Mountain Bike",
-            productId: "SPEC-ROCKHOP-29",
-            quantity: 1,
-            price: 72999,
-            total: 72999
-          }
-        ];
-        
-        // Save to localStorage
-        localStorage.setItem('bikeInventory', JSON.stringify(this.inventory));
-        localStorage.setItem('bikeSales', JSON.stringify(this.sales));
-        
-        // Try to save to Supabase if available
-        if (supabase) {
-          this.showNotification('Sample data loaded locally. Supabase sync not implemented for sample data.', 'warning');
-        } else {
-          this.showNotification('Sample data loaded', 'success');
-        }
-        
-        this.renderAll();
-      }
-    }
-
-    // Initialize the app
-    let manager;
-    document.addEventListener('DOMContentLoaded', () => {
-      manager = new BikeShopManager();
+    // Toggle password visibility
+    togglePasswordButton.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // Toggle eye icon
+      const icon = this.querySelector('i');
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
     });
+
+    // Show notification function
+    function showNotification(message, type = 'success') {
+      notificationText.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // Validate login form
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      // Basic validation
+      if (!username || !password) {
+        showError('Please enter both username and password');
+        return;
+      }
+      
+      // Check credentials
+      const user = users.find(u => u.username === username && u.password === password);
+      
+      if (user) {
+        // Successful login
+        showNotification('Login successful! Redirecting...', 'success');
+        
+        // Store user data in session storage
+        sessionStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Redirect to main application (simulate with timeout)
+        setTimeout(() => {
+          // In a real application, you would redirect to your main app page
+          alert('Would redirect to main application now');
+          console.log('Logged in user:', user);
+        }, 1500);
+      } else {
+        // Failed login
+        showError('Invalid username or password');
+      }
+    });
+
+    // Show error message
+    function showError(message) {
+      errorText.textContent = message;
+      loginError.style.display = 'block';
+      
+      // Hide error after 5 seconds
+      setTimeout(() => {
+        loginError.style.display = 'none';
+      }, 5000);
+    }
+
+    // Check if user is already logged in
+    const currentUser = sessionStorage.getItem('currentUser');
+    if (currentUser) {
+      // User is already logged in, redirect to main app
+      console.log('User already logged in:', JSON.parse(currentUser));
+    }
   </script>
 </body>
 </html>
